@@ -18,9 +18,27 @@
     <h1>👀 Staring Contest</h1>
     <p>Don't blink! Timer starts when you make eye contact.</p>
 
+    <div class="controls">
+        <button id="startBtn">Start Game</button>
+        <label>
+            <input type="checkbox" id="toggleVideo" checked>
+            Show Webcam Video
+        </label>
+    </div>
+
+    <div class="scoreboard">
+        <div id="timer">Time: 0.00s</div>
+        <div id="highscore">Highscore: 0.00s</div>
+        <div id="lastscore">Last Score: 0.00s</div>
+    </div>
+
+    <div class="eyes-container">
+        <div class="eye"><div class="pupil"></div></div>
+        <div class="eye"><div class="pupil"></div></div>
+    </div>
+
     <video id="video" autoplay playsinline></video>
-    <div id="timer">Time: 0.00s</div>
-    <div id="status">Looking for your eyes...</div>
+    <div id="status">Press Start to Begin</div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
