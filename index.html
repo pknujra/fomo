@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline preload="auto" id="bg-video">
+        <source src="stars.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Main Content -->
     <h1>👀 Staring Contest</h1>
     <p>Don't blink! Timer starts when you make eye contact.</p>
 
@@ -14,9 +22,11 @@
     <div id="timer">Time: 0.00s</div>
     <div id="status">Looking for your eyes...</div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <script src="cv.js"></script>
     <script src="script.js"></script>
+    
 </body>
 </html>
