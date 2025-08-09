@@ -1,5 +1,3 @@
-
-
 let timerStart = null;
 let blinked = false;
 let looking = false;
@@ -8,14 +6,39 @@ let highscore = parseFloat(localStorage.getItem("highscore")) || 0;
 
 const EAR_THRESHOLD = 0.21;
 
+const bgVideo = document.getElementById("bg-video");
+const bgMusic = document.getElementById("bg-music");
+
+function startGameBackground() {
+    bgVideo.src = "gamebg.mp4";
+    bgVideo.loop = true;
+    bgVideo.muted = true;
+    bgVideo.play();
+
+    bgMusic.currentTime = 0;
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+    bgMusic.play().catch(err => console.log("Autoplay blocked:", err));
+}
+
+function endGameBackground() {
+    bgVideo.src = "stars.mp4";
+    bgVideo.loop = true;
+    bgVideo.muted = true;
+    bgVideo.play();
+
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+}
+
 function updateScores(lastScore) {
-    document.getElementById("lastscore").textContent = `Last Score: ${lastScore.toFixed(2)}s`;
+    document.getElementById("lastscore").textContent = `💾 Last Score: ${lastScore.toFixed(2)}s`;
 
     if (lastScore > highscore) {
         highscore = lastScore;
         localStorage.setItem("highscore", highscore);
     }
-    document.getElementById("highscore").textContent = `Highscore: ${highscore.toFixed(2)}s`;
+    document.getElementById("highscore").textContent = `🏆 Highscore: ${highscore.toFixed(2)}s`;
 }
 
 function onResults(results) {
@@ -39,7 +62,7 @@ function onResults(results) {
 
         if (!blinked) {
             const elapsed = ((performance.now() - timerStart) / 1000);
-            timerElement.textContent = `Time: ${elapsed.toFixed(2)}s`;
+            timerElement.textContent = `⏱ Time: ${elapsed.toFixed(2)}s`;
         }
 
         if (ear < EAR_THRESHOLD && !blinked) {
@@ -47,7 +70,7 @@ function onResults(results) {
             const finalTime = ((performance.now() - timerStart) / 1000);
             statusElement.textContent = "😮 You blinked!";
             updateScores(finalTime);
-            alert(`You blinked! Time: ${finalTime.toFixed(2)}s`);
+            endGameBackground();
             gameRunning = false;
         }
     } else {
@@ -56,7 +79,7 @@ function onResults(results) {
     }
 }
 
-// Eye animation movement
+// Eye animation
 document.addEventListener("mousemove", e => {
     const eyes = document.querySelectorAll(".pupil");
     const x = e.clientX / window.innerWidth - 0.5;
@@ -72,8 +95,9 @@ document.getElementById("startBtn").addEventListener("click", () => {
     blinked = false;
     timerStart = null;
     gameRunning = true;
-    document.getElementById("timer").textContent = "Time: 0.00s";
+    document.getElementById("timer").textContent = "⏱ Time: 0.00s";
     document.getElementById("status").textContent = "Looking for your eyes...";
+    startGameBackground();
 });
 
 // Video toggle
@@ -82,7 +106,7 @@ document.getElementById("toggleVideo").addEventListener("change", e => {
     video.style.display = e.target.checked ? "block" : "none";
 });
 
-document.getElementById("highscore").textContent = `Highscore: ${highscore.toFixed(2)}s`;
+document.getElementById("highscore").textContent = `🏆 Highscore: ${highscore.toFixed(2)}s`;
 
 const faceMesh = new FaceMesh({
     locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
@@ -99,3 +123,18 @@ const camera = new Camera(videoElement, {
     height: 480
 });
 camera.start();
+
+// EAR calculation
+function calcEAR(eye) {
+    const dist = (p1, p2) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
+    return (dist(eye[1], eye[5]) + dist(eye[2], eye[4])) /
+        (2.0 * dist(eye[0], eye[3]));
+}
+
+function getEyeLandmarks(landmarks) {
+    const leftEyeIdx = [33, 160, 158, 133, 153, 144];
+    const rightEyeIdx = [362, 385, 387, 263, 373, 380];
+    const leftEye = leftEyeIdx.map(i => landmarks[i]);
+    const rightEye = rightEyeIdx.map(i => landmarks[i]);
+    return { leftEye, rightEye };
+}
