@@ -15,29 +15,36 @@
     </video>
 
     <!-- Main Content -->
-    <h1>👀 Staring Contest</h1>
+    <h1 class="glow">👀 Staring Contest</h1>
     <p>Don't blink! Timer starts when you make eye contact.</p>
 
     <div class="controls">
-        <button id="startBtn">Start Game</button>
-        <label>
+        <button id="startBtn">🚀 Start Game</button>
+
+        <label class="toggle-container">
             <input type="checkbox" id="toggleVideo" checked>
-            Show Webcam Video
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">Show Camera</span>
         </label>
     </div>
 
+    <!-- Scoreboard -->
     <div class="scoreboard">
-        <div id="timer">Time: 0.00s</div>
-        <div id="highscore">Highscore: 0.00s</div>
-        <div id="lastscore">Last Score: 0.00s</div>
+        <div class="score-item" id="timer">⏱ Time: 0.00s</div>
+        <div class="score-item" id="highscore">🏆 Highscore: 0.00s</div>
+        <div class="score-item" id="lastscore">💾 Last Score: 0.00s</div>
     </div>
 
+    <!-- Eyes Animation -->
     <div class="eyes-container">
         <div class="eye"><div class="pupil"></div></div>
         <div class="eye"><div class="pupil"></div></div>
     </div>
 
+    <!-- Camera Feed -->
     <video id="video" autoplay playsinline></video>
+
+    <!-- Status -->
     <div id="status">Press Start to Begin</div>
 
     <!-- Scripts -->
@@ -45,6 +52,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <script src="cv.js"></script>
     <script src="script.js"></script>
-    
 </body>
 </html>
