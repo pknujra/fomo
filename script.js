@@ -1,3 +1,6 @@
+
+
+
 let timerStart = null;
 let blinked = false;
 let looking = false;
